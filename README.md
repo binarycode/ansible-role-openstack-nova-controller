@@ -59,7 +59,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - binarycode.openstack-nova-controller
+        - binarycode.openstack-nova-controller
 
 License
 -------
