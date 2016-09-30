@@ -29,15 +29,12 @@
   ini_file:
     dest:    /etc/nova/nova.conf
     section: oslo_messaging_rabbit
-    option:  '{{ item.option }}'
+    option:  '{{ item.key }}'
     value:   '{{ item.value }}'
-  with_items:
-    - option: rabbit_host
-      value:  '{{ rabbitmq_host }}'
-    - option: rabbit_userid
-      value:  '{{ rabbitmq_user }}'
-    - option: rabbit_password
-      value:  '{{ rabbitmq_password }}'
+  with_dict:
+    rabbit_host:     '{{ rabbitmq_host }}'
+    rabbit_userid:   '{{ rabbitmq_user }}'
+    rabbit_password: '{{ rabbitmq_password }}'
 
 - name: Use Keystone.
   ini_file:
@@ -50,27 +47,18 @@
   ini_file:
     dest:    /etc/nova/nova.conf
     section: keystone_authtoken
-    option:  '{{ item.option }}'
+    option:  '{{ item.key }}'
     value:   '{{ item.value }}'
-  with_items:
-    - option: auth_uri
-      value:  'http://{{ keystone_host }}:5000'
-    - option: auth_url
-      value:  'http://{{ keystone_host }}:35357'
-    - option: memcached_servers
-      value:  '{{ keystone_host }}:11211'
-    - option: auth_type
-      value:  password
-    - option: project_domain_name
-      value:  default
-    - option: user_domain_name
-      value:  default
-    - option: project_name
-      value:  service
-    - option: username
-      value:  nova
-    - option: password
-      value:  '{{ keystone_password }}'
+  with_dict:
+    auth_uri:            'http://{{ keystone_host }}:5000'
+    auth_url:            'http://{{ keystone_host }}:35357'
+    memcached_servers:   '{{ keystone_host }}:11211'
+    auth_type:           password
+    project_domain_name: default
+    user_domain_name:    default
+    project_name:        service
+    username:            nova
+    password:            '{{ keystone_password }}'
 
 - name: Configure management interface IP.
   ini_file:
@@ -83,13 +71,30 @@
   ini_file:
     dest:    /etc/nova/nova.conf
     section: DEFAULT
-    option:  '{{ item.option }}'
+    option:  '{{ item.key }}'
     value:   '{{ item.value }}'
-  with_items:
-    - option: use_neutron
-      value:  true
-    - option: firewall_driver
-      value:  nova.virt.firewall.NoopFirewallDriver
+  with_dict:
+    use_neutron:     true
+    firewall_driver: nova.virt.firewall.NoopFirewallDriver
+
+- name: Configure Neutron access.
+  ini_file:
+    dest:    /etc/nova/nova.conf
+    section: neutron
+    option:  '{{ item.key }}'
+    value:   '{{ item.value }}'
+  with_dict:
+    url:                          'http://{{ neutron_host }}:9696'
+    auth_url:                     'http://{{ neutron_host }}:35357'
+    auth_type:                    password
+    project_domain_name:          default
+    user_domain_name:             default
+    region_name:                  '{{ region }}'
+    project_name:                 service
+    username:                     neutron
+    password:                     '{{ neutron_password }}'
+    service_metadata_proxy:       true
+    metadata_proxy_shared_secret: '{{ metadata_secret }}'
 
 - name: Configure VNC proxy.
   ini_file:

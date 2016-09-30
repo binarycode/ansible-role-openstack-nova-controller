@@ -49,6 +49,15 @@ Glance API host.
 
 OpenStack region.
 
+    neutron_host: controller
+    neutron_password:
+
+Neutron credentials.
+
+    metadata_secret:
+
+Secret token for metadata proxy.
+
 Dependencies
 ------------
 
