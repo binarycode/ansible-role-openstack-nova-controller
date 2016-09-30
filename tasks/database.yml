@@ -1,0 +1,37 @@
+---
+- name: Create Nova DBs.
+  mysql_db:
+    login_host: '{{ mysql_host }}'
+    name:       '{{ item }}'
+    state:      present
+  with_items:
+    - nova
+    - nova_api
+
+- name: Create Nova DB users.
+  mysql_user:
+    name:         nova
+    login_host:   '{{ mysql_host }}'
+    password:     '{{ mysql_password }}'
+    priv:         '{{ item.db }}.*:ALL'
+    state:        present
+    host:         '{{ item.host }}'
+    append_privs: yes
+  with_items:
+    - db:   nova
+      host: localhost
+    - db:   nova
+      host: '%'
+    - db:   nova_api
+      host: localhost
+    - db:   nova_api
+      host: '%'
+
+- name:         Populate Nova DBs.
+  changed_when: no
+  command:      'nova-manage {{ item }} sync'
+  become:       true
+  become_user:  nova
+  with_items:
+    - api_db
+    - db

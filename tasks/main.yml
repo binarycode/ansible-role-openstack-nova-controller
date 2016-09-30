@@ -1,0 +1,6 @@
+---
+- include: packages.yml
+- include: configuration.yml
+- include: database.yml
+- include: initialize.yml
+- include: services.yml

@@ -1,0 +1,9 @@
+---
+- name:         Get list of services.
+  register:     openstack_services
+  changed_when: no
+  command:      openstack service list -f value -c Type
+
+- name:    Create Compute service.
+  command: openstack service create --name nova --description "OpenStack Compute" compute
+  when:    '"compute" not in openstack_services.stdout'

@@ -1,0 +1,9 @@
+- block:
+    - include: initialize/service.yml
+    - include: initialize/endpoints.yml
+    - include: initialize/users.yml
+
+  environment:
+    OS_TOKEN:                '{{ keystone_admin_token }}'
+    OS_URL:                  'http://{{ keystone_host }}:35357/v3'
+    OS_IDENTITY_API_VERSION: 3
