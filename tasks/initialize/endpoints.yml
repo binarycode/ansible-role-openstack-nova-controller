@@ -8,6 +8,6 @@
   command: 'openstack endpoint create --region {{ region }} compute {{ item.key }} {{ item.value }}'
   when:    '"{{ item.key }}" not in openstack_compute_endpoints.stdout'
   with_dict:
-    public:   'http://{{ ip_address }}:8774/v2.1/%(tenant_id)s'
-    internal: 'http://{{ ip_address }}:8774/v2.1/%(tenant_id)s'
-    admin:    'http://{{ ip_address }}:8774/v2.1/%(tenant_id)s'
+    public:   'http://{{ host }}:8774/v2.1/%(tenant_id)s'
+    internal: 'http://{{ host }}:8774/v2.1/%(tenant_id)s'
+    admin:    'http://{{ host }}:8774/v2.1/%(tenant_id)s'
