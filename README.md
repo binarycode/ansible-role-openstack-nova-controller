@@ -26,9 +26,9 @@ IP address in management network.
 
 Keystone credentials for Nova user.
 
-    keystone_admin_token:
+    keystone_admin_password:
 
-Keystone administration token.
+Password for admin Keystone user.
 
     mysql_host: controller
     mysql_password:
