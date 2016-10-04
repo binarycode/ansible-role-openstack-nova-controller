@@ -1,7 +1,6 @@
 ---
 - name: Create Nova DBs.
   mysql_db:
-    login_host: '{{ mysql_host }}'
     name:       '{{ item }}'
     state:      present
   with_items:
@@ -11,7 +10,6 @@
 - name: Create Nova DB users.
   mysql_user:
     name:         nova
-    login_host:   '{{ mysql_host }}'
     password:     '{{ mysql_password }}'
     priv:         '{{ item.db }}.*:ALL'
     state:        present
